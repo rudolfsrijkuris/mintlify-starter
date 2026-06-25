@@ -1,0 +1,96 @@
+---
+title: "MCP Server"
+description: "Use Postezi as a tool inside Claude, Cursor, n8n, and any MCP-compatible agent."
+---
+
+Postezi runs a hosted [Model Context Protocol](https://modelcontextprotocol.io) (MCP) server. Add a single URL to your agent or IDE and it can publish posts, schedule content, list your accounts, and upload media — without any custom integration code.
+
+## Server URL
+
+```
+https://api.postezi.com/mcp
+```
+
+Authentication uses the same Bearer token as the REST API:
+
+```
+Authorization: Bearer sk_live_...
+```
+
+---
+
+## Add to Claude Desktop
+
+Add this to your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "postezi": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://api.postezi.com/mcp"],
+      "env": {
+        "AUTHORIZATION": "Bearer sk_live_..."
+      }
+    }
+  }
+}
+```
+
+---
+
+## Add to Cursor
+
+In Cursor settings → MCP → Add server:
+
+```json
+{
+  "postezi": {
+    "url": "https://api.postezi.com/mcp",
+    "headers": {
+      "Authorization": "Bearer sk_live_..."
+    }
+  }
+}
+```
+
+---
+
+## Add to n8n
+
+Use the **MCP Client** node. Set:
+- **Server URL**: `https://api.postezi.com/mcp`
+- **Authentication**: Header auth, `Authorization: Bearer sk_live_...`
+
+---
+
+## What your agent can do
+
+Once connected, your agent has access to these tools:
+
+| Tool | What it does |
+|------|-------------|
+| `list_accounts` | See which platforms are connected |
+| `publish_post` | Publish immediately to one or more platforms |
+| `schedule_post` | Queue a post for a future UTC time |
+| `list_posts` | Browse published, scheduled, or failed posts |
+| `cancel_post` | Cancel a scheduled post |
+| `upload_media` | Fetch an image from a public URL and upload it |
+
+<Card title="Tool reference" icon="wrench" href="/mcp/tools">
+  Full parameter docs for every MCP tool.
+</Card>
+
+---
+
+## Example prompts
+
+Once the MCP server is connected in Claude:
+
+> "Post to my Bluesky: just shipped dark mode. check it out at postezi.com"
+
+> "Schedule a LinkedIn post for tomorrow at 9am UTC announcing the v2 release"
+
+> "Show me my last 5 published posts"
+
+> "Upload this image and include it in a Bluesky post: https://..."

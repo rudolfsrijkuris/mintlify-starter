@@ -1,0 +1,184 @@
+---
+title: "Posts"
+description: "Publish, schedule, list, and cancel posts."
+---
+
+## Publish a post
+
+`POST /v1/posts`
+
+Publishes immediately to one or more connected platforms. All platforms are attempted — if one fails, the others still publish. The response includes per-platform results.
+
+<CodeGroup>
+```bash cURL
+curl -X POST https://api.postezi.com/v1/posts \
+  -H "Authorization: Bearer $POSTEZI_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "content": "Just shipped v2.0. Changelog in the link below.",
+    "platforms": ["bluesky", "linkedin"],
+    "media_urls": ["https://r2.postezi.com/media/..."]
+  }'
+```
+
+```json Response
+{
+  "data": {
+    "id": "018f4a2b-...",
+    "content": "Just shipped v2.0. Changelog in the link below.",
+    "status": "published",
+    "published_at": "2025-06-19T10:00:00Z",
+    "results": [
+      { "platform": "bluesky", "success": true, "url": "https://bsky.app/profile/..." },
+      { "platform": "linkedin", "success": true, "url": "https://linkedin.com/feed/..." }
+    ]
+  }
+}
+```
+</CodeGroup>
+
+### Body parameters
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `content` | string | ✓ | Post text. Platform limits: Bluesky 300, Threads 500, LinkedIn 3,000 chars. |
+| `platforms` | string[] | ✓ | Platforms to publish to. Must be connected. Valid: `bluesky`, `linkedin`, `threads`. |
+| `media_urls` | string[] | — | R2 URLs from `POST /v1/media`. Max 4 images. |
+
+---
+
+## Schedule a post
+
+`POST /v1/posts/schedule`
+
+Queues a post for publishing at a future UTC time. The post is delivered automatically via a background worker.
+
+<CodeGroup>
+```bash cURL
+curl -X POST https://api.postezi.com/v1/posts/schedule \
+  -H "Authorization: Bearer $POSTEZI_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "content": "Big launch tomorrow. Stay tuned.",
+    "platforms": ["bluesky"],
+    "scheduled_at": "2025-06-20T09:00:00Z"
+  }'
+```
+
+```json Response
+{
+  "data": {
+    "id": "018f4a2c-...",
+    "content": "Big launch tomorrow. Stay tuned.",
+    "platforms": ["bluesky"],
+    "status": "scheduled",
+    "scheduled_at": "2025-06-20T09:00:00Z",
+    "task_id": "018f4a2c-..."
+  }
+}
+```
+</CodeGroup>
+
+### Body parameters
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `content` | string | ✓ | Post text. |
+| `platforms` | string[] | ✓ | Platforms to publish to. |
+| `scheduled_at` | string | ✓ | RFC3339 UTC timestamp. Must be in the future. Example: `2025-06-20T09:00:00Z` |
+| `media_urls` | string[] | — | R2 media URLs. |
+
+---
+
+## List posts
+
+`GET /v1/posts`
+
+Returns paginated posts for the authenticated user, newest first.
+
+<CodeGroup>
+```bash cURL
+curl "https://api.postezi.com/v1/posts?status=scheduled&limit=20&offset=0" \
+  -H "Authorization: Bearer $POSTEZI_KEY"
+```
+
+```json Response
+{
+  "data": [
+    {
+      "id": "018f4a2c-...",
+      "content": "Big launch tomorrow.",
+      "platforms": ["bluesky"],
+      "status": "scheduled",
+      "scheduled_at": "2025-06-20T09:00:00Z",
+      "published_at": null,
+      "failure_reason": null,
+      "task_id": "018f4a2c-...",
+      "created_at": "2025-06-19T10:00:00Z"
+    }
+  ],
+  "meta": {
+    "total": 42,
+    "limit": 20,
+    "offset": 0
+  }
+}
+```
+</CodeGroup>
+
+### Query parameters
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `status` | string | Filter by status: `draft`, `scheduled`, `published`, `failed`. Omit for all. |
+| `limit` | integer | Max results. Default `20`, max `100`. |
+| `offset` | integer | Pagination offset. Default `0`. |
+
+---
+
+## Get a post
+
+`GET /v1/posts/{id}`
+
+Returns a single post by UUID.
+
+```bash
+curl "https://api.postezi.com/v1/posts/018f4a2c-..." \
+  -H "Authorization: Bearer $POSTEZI_KEY"
+```
+
+---
+
+## Cancel a scheduled post
+
+`DELETE /v1/posts/{id}`
+
+Cancels a scheduled post and removes it from the queue. Only posts with `status: scheduled` can be cancelled. The post is moved back to `draft` status.
+
+<CodeGroup>
+```bash cURL
+curl -X DELETE "https://api.postezi.com/v1/posts/018f4a2c-..." \
+  -H "Authorization: Bearer $POSTEZI_KEY"
+```
+
+```json Response
+{
+  "data": {
+    "id": "018f4a2c-...",
+    "status": "draft",
+    ...
+  }
+}
+```
+</CodeGroup>
+
+---
+
+## Post statuses
+
+| Status | Description |
+|--------|-------------|
+| `draft` | Created but not queued or published. |
+| `scheduled` | Queued for future delivery. Cancel with `DELETE /v1/posts/{id}`. |
+| `published` | Successfully delivered to all platforms. |
+| `failed` | One or more platforms failed. Check `failure_reason`. |

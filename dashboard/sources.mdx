@@ -1,0 +1,46 @@
+---
+title: "Sources"
+description: "Connect GitHub repositories to automatically generate social posts."
+---
+
+Sources lets you connect GitHub repositories so Postezi can watch them and auto-draft social posts whenever something happens. Posts go into your [Queue](/dashboard/queue) for review before anything is published.
+
+## Connecting GitHub
+
+<Steps>
+  <Step title="Authorize GitHub">
+    Click **Connect GitHub** on the Sources page. You'll be redirected to GitHub to authorize Postezi. Postezi requests read access to your repositories and permission to install webhooks.
+  </Step>
+  <Step title="Pick a repository">
+    After authorizing, you'll see a searchable list of your repositories. Click **Connect** next to the repo you want to watch.
+  </Step>
+  <Step title="Start building">
+    Postezi installs a webhook on the repo. From now on, every push, merged PR, and published release triggers a draft in your Queue.
+  </Step>
+</Steps>
+
+## What triggers a draft
+
+| Event | Condition | What's drafted |
+|-------|-----------|---------------|
+| Push | Any push to any branch | A build-in-public update summarising the commits |
+| Pull request | Merged only | A feature announcement with the PR title and description |
+| Release | Published | A launch post with the tag name and release notes |
+
+## Managing connected repositories
+
+Connected repos are listed on the Sources page. Each shows the repo name and when it was connected.
+
+To remove a repo, click the trash icon and confirm. This uninstalls the webhook — future events from that repo will be ignored.
+
+## Adding more repositories
+
+Click **+ Connect another repo** to go through the flow again for a second repository. You can connect as many repos as you like.
+
+## Generated post tone
+
+Posts are generated with a `professional` tone by default. The tone used for each draft is shown on the queue card. (Custom tone configuration is coming soon.)
+
+<Tip>
+  Connect the repo you ship to most often. Even small commits — fixing a bug, shipping a tiny feature — make great build-in-public content.
+</Tip>

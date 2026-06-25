@@ -1,0 +1,46 @@
+---
+title: "Posts & Queue"
+description: "Review AI-drafted posts and manage your publishing history."
+---
+
+The Posts page has two views: the **Queue** for AI-drafted content awaiting review, and tabs for browsing your publishing history.
+
+## Queue tab
+
+The Queue shows posts that were automatically generated from your GitHub activity and are waiting for your review. Each card displays:
+
+- The source repository and event type
+- The target platform
+- The tone used for generation
+- An editable textarea with the generated content
+
+### Reviewing a draft
+
+You can edit the content directly in the card before taking any action.
+
+**Approve** — opens the post in Compose with the content pre-filled (including any edits you made in the card). The post stays in the queue until you actually publish — if you close Compose, it comes back.
+
+**Discard** — removes the draft from the queue permanently.
+
+<Note>
+  The queue polls for new drafts every 30 seconds, so freshly generated posts appear without a page refresh.
+</Note>
+
+## All / Scheduled / Published / Failed tabs
+
+These tabs show your full post history, paginated 20 at a time.
+
+| Tab | What it shows |
+|-----|---------------|
+| All | Every post, all statuses |
+| Scheduled | Posts queued for future delivery. Cancel with the Cancel button. |
+| Published | Successfully delivered posts |
+| Failed | Posts that failed on one or more platforms. Hover "See reason" for the error. |
+
+### Draft posts
+
+Draft posts in the **All** tab have an **Edit in Compose** button that opens the post in Compose with the content pre-filled — useful if you approved a queue item but closed Compose before publishing.
+
+### Cancelling a scheduled post
+
+Scheduled posts show a **Cancel** button. Clicking it asks for confirmation, then removes the post from the delivery queue and moves it back to `draft` status.

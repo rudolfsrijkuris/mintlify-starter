@@ -1,0 +1,89 @@
+---
+title: "Authentication"
+description: "How to authenticate with the Postezi API."
+---
+
+## API keys
+
+Every API request must include your API key as a Bearer token in the `Authorization` header.
+
+```bash
+Authorization: Bearer sk_live_...
+```
+
+API keys start with `sk_live_`. You can find or regenerate your key in the [API Keys](https://app.postezi.com/api-keys) page.
+
+<Warning>
+  Treat your API key like a password. Regenerating it immediately invalidates the previous key.
+</Warning>
+
+---
+
+## Magic link sign-in
+
+Postezi uses passwordless email authentication. Sign in by requesting a magic link — the link is valid for 15 minutes and single-use.
+
+### Request a magic link
+
+<CodeGroup>
+```bash cURL
+curl -X POST https://api.postezi.com/v1/auth/magic-link \
+  -H "Content-Type: application/json" \
+  -d '{"email": "you@example.com"}'
+```
+
+```json Response
+{
+  "data": {
+    "message": "If an account exists for this email, a sign-in link has been sent."
+  }
+}
+```
+</CodeGroup>
+
+If the email is new, an account is created automatically.
+
+### Verify the token
+
+The magic link contains a `token` query parameter. Verify it to get your API key:
+
+<CodeGroup>
+```bash cURL
+curl "https://api.postezi.com/v1/auth/magic-link/verify?token=TOKEN"
+```
+
+```json Response
+{
+  "data": {
+    "api_key": "sk_live_...",
+    "email": "you@example.com"
+  }
+}
+```
+</CodeGroup>
+
+---
+
+## Regenerate your API key
+
+Generates a new key and immediately invalidates the previous one.
+
+<CodeGroup>
+```bash cURL
+curl -X POST https://api.postezi.com/v1/auth/regenerate-key \
+  -H "Authorization: Bearer sk_live_..."
+```
+
+```json Response
+{
+  "data": {
+    "api_key": "sk_live_...",
+    "message": "Your previous API key has been invalidated."
+  }
+}
+```
+</CodeGroup>
+
+<Note>
+  After regenerating, update your API key everywhere it's used — the old key stops working immediately.
+</Note>

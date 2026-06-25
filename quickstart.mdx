@@ -1,0 +1,88 @@
+---
+title: "Quickstart"
+description: "From sign-up to your first published post in under 5 minutes."
+---
+
+## 1. Create an account
+
+Go to [app.postezi.com](https://app.postezi.com) and enter your email. You'll receive a magic link — click it to sign in. No password needed.
+
+## 2. Get your API key
+
+After signing in, go to **API Keys** in the sidebar. Your key is shown there. Copy it — you'll use it as a Bearer token on every request.
+
+```bash
+export POSTEZI_KEY="sk_live_..."
+```
+
+## 3. Connect a social account
+
+Before publishing you need at least one platform connected.
+
+**Bluesky** — connect via the dashboard (Accounts → Connect Bluesky) or the API:
+
+```bash
+curl -X POST https://api.postezi.com/v1/accounts/bluesky/connect \
+  -H "Authorization: Bearer $POSTEZI_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"handle": "you.bsky.social", "app_password": "xxxx-xxxx-xxxx-xxxx"}'
+```
+
+**LinkedIn / Threads** — connect via the dashboard. The API returns an OAuth URL to redirect the user to.
+
+## 4. Publish your first post
+
+```bash
+curl -X POST https://api.postezi.com/v1/posts \
+  -H "Authorization: Bearer $POSTEZI_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "content": "Shipped something new today. #buildinpublic",
+    "platforms": ["bluesky"]
+  }'
+```
+
+A successful response looks like:
+
+```json
+{
+  "data": {
+    "id": "018f...",
+    "content": "Shipped something new today. #buildinpublic",
+    "status": "published",
+    "published_at": "2025-06-19T10:00:00Z",
+    "results": [
+      { "platform": "bluesky", "success": true, "url": "https://bsky.app/profile/..." }
+    ]
+  }
+}
+```
+
+## 5. Schedule a post
+
+```bash
+curl -X POST https://api.postezi.com/v1/posts/schedule \
+  -H "Authorization: Bearer $POSTEZI_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "content": "Big launch tomorrow. Stay tuned.",
+    "platforms": ["bluesky", "linkedin"],
+    "scheduled_at": "2025-06-20T09:00:00Z"
+  }'
+```
+
+The post is queued and published automatically at the specified UTC time.
+
+## Using the MCP server
+
+Add Postezi to any MCP-compatible client (Claude, Cursor, n8n) with a single URL:
+
+```
+https://api.postezi.com/mcp
+```
+
+Pass your API key as a Bearer token in the Authorization header. The MCP server exposes tools for publishing, scheduling, listing posts, cancelling scheduled posts, listing accounts, and uploading media.
+
+<Card title="MCP Server docs" icon="robot" href="/mcp/overview">
+  Full tool reference and client setup instructions.
+</Card>

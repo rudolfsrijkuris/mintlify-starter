@@ -1,0 +1,87 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "maple",
+  "name": "Postezi",
+  "colors": {
+    "primary": "#6366F1",
+    "light": "#818CF8",
+    "dark": "#4F46E5"
+  },
+  "favicon": "/favicon.png",
+  "navigation": {
+    "pages": [
+      {
+        "group": "Getting Started",
+        "pages": ["index", "quickstart"]
+      },
+      {
+        "group": "REST API",
+        "pages": [
+          "api-reference/authentication",
+          "api-reference/posts",
+          "api-reference/accounts",
+          "api-reference/media",
+          "api-reference/github"
+        ]
+      },
+      {
+        "group": "MCP Server",
+        "pages": ["mcp/overview", "mcp/tools"]
+      },
+      {
+        "group": "Dashboard",
+        "pages": [
+          "dashboard/compose",
+          "dashboard/queue",
+          "dashboard/sources",
+          "dashboard/x-twitter"
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "API Reference",
+          "href": "/api-reference/authentication",
+          "icon": "code"
+        },
+        {
+          "anchor": "MCP Server",
+          "href": "/mcp/overview",
+          "icon": "robot"
+        },
+        {
+          "anchor": "Support",
+          "href": "mailto:support@postezi.com",
+          "icon": "envelope"
+        }
+      ]
+    }
+  },
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:support@postezi.com"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Dashboard",
+      "href": "https://app.postezi.com"
+    }
+  },
+  "contextual": {
+    "options": ["copy", "view", "chatgpt", "claude", "perplexity", "mcp", "cursor", "vscode"]
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/postezi",
+      "github": "https://github.com/postezi"
+    }
+  }
+}

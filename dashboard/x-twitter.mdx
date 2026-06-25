@@ -1,0 +1,107 @@
+---
+title: "X (Twitter)"
+description: "Connect your X account using your own developer keys (BYOK) to publish posts directly from Postezi."
+---
+
+X (Twitter) uses a **Bring Your Own Key** (BYOK) model. Instead of Postezi sharing a single X developer app with all users, you connect your own X developer app credentials. This gives you full control over your X API quota, keeps your credentials private, and means Postezi has zero cost for X publishing.
+
+## How it works
+
+When you connect X, Postezi:
+
+1. Asks for your 4 X developer credentials
+2. Verifies them immediately by calling the X API
+3. Stores them encrypted at rest (AES-256-GCM)
+4. Uses them to sign requests on your behalf whenever you publish a post to X
+
+Your credentials never leave Postezi's servers unencrypted and are never shared with any third party.
+
+## Before you start
+
+You need a free X developer account. Go to [developer.x.com](https://developer.x.com) and sign in with your X account. Free accounts include enough API access for publishing posts.
+
+## Step-by-step setup
+
+<Steps>
+  <Step title="Create a developer account">
+    Go to [developer.x.com](https://developer.x.com) and click **Sign up**. Use the same X account you want to publish from. Free tier is sufficient.
+  </Step>
+
+  <Step title="Create a Project and App">
+    In the developer portal, click **+ Create Project**. Give it a name (e.g. "Postezi"), select a use case (e.g. "Making a bot"), and create an App inside the project. The app name is only visible in your developer portal.
+  </Step>
+
+  <Step title="Set Read and Write permissions">
+    Inside your App, go to **Settings** → **User authentication settings**. Under **App permissions**, select **Read and Write**. Save the settings.
+
+    <Warning>
+      If you skip this step, your Access Token will only have read permissions and posting will fail with a 403 error. You must regenerate your Access Token after changing permissions.
+    </Warning>
+  </Step>
+
+  <Step title="Copy your credentials">
+    Go to **Keys and Tokens** inside your App. You need all four values:
+
+    | Credential | Where to find it |
+    |---|---|
+    | **API Key** (Consumer Key) | Keys and Tokens → API Key and Secret |
+    | **API Secret** (Consumer Secret) | Keys and Tokens → API Key and Secret |
+    | **Access Token** | Keys and Tokens → Authentication Tokens |
+    | **Access Token Secret** | Keys and Tokens → Authentication Tokens |
+
+    If you don't see Access Token values, click **Generate** under Authentication Tokens. Make sure you generate them *after* setting Read and Write permissions.
+  </Step>
+
+  <Step title="Paste into Postezi">
+    In the Postezi dashboard, go to **Accounts** and click on the **X (Twitter)** card to expand it. Paste all four credentials into the fields and click **Connect X account**.
+
+    Postezi verifies the credentials immediately. If they're valid, your X handle appears as connected. If verification fails, double-check that you copied all four values correctly and that your app has Read and Write permissions.
+  </Step>
+</Steps>
+
+## X API pricing
+
+X charges you directly on your developer account per published post. Postezi does not mark up or pass through any X API costs — you pay X directly.
+
+Current X API v2 pricing (Free tier):
+
+- **Text posts**: ~$0.015 per tweet
+- **Posts with URLs**: ~$0.20 per tweet (URL enrichment is charged separately)
+
+The Free plan includes a monthly free allowance that covers light usage. If you're publishing frequently, check [developer.x.com/en/portal/products](https://developer.x.com/en/portal/products) for current pricing and plan options.
+
+<Note>
+  Postezi posts text-only to X at this time. Media uploads (images, video) are in development. Even without media, posts can include URLs that X will unfurl as cards.
+</Note>
+
+## Character limit
+
+X has a **280 character** limit per post. Postezi enforces this in the compose editor — the character counter turns red when you're within 10 characters of the limit. Attempting to publish over 280 characters will be blocked.
+
+When AI-generated posts (from GitHub sources) are created for X, the LLM is instructed to stay within 280 characters.
+
+## Disconnecting
+
+To remove your X account from Postezi, go to **Accounts**, find the X card, and click **Disconnect**. Confirm the prompt.
+
+Disconnecting removes your stored credentials from Postezi. It does not delete your X developer app or revoke the app's access — you can do that separately from [developer.x.com](https://developer.x.com) if you want to fully revoke access.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="'Invalid credentials' error when connecting">
+    Double-check all four values are copied correctly with no extra spaces. The most common cause is copying the Access Token *before* enabling Read and Write permissions — in that case, generate a new Access Token after updating permissions and use the new values.
+  </Accordion>
+
+  <Accordion title="Publishing fails with a 403 error">
+    Your Access Token was generated before Read and Write permissions were set. Go to your X developer portal, update the app's permissions to Read and Write, then regenerate the Access Token and reconnect in Postezi with the new credentials.
+  </Accordion>
+
+  <Accordion title="Publishing fails with a 401 error">
+    Your credentials may have been revoked or your app may have been suspended. Go to [developer.x.com](https://developer.x.com) and check your app's status. You can also regenerate your API Key and Access Token from Keys and Tokens, then reconnect in Postezi.
+  </Accordion>
+
+  <Accordion title="Post went through but I got charged unexpectedly">
+    URL enrichment on X is billed separately from tweet creation. If your post included a URL, X may charge the URL rate ($0.20) rather than the text rate ($0.015). Check your usage at [developer.x.com/en/portal/dashboard](https://developer.x.com/en/portal/dashboard).
+  </Accordion>
+</AccordionGroup>
