@@ -31,8 +31,21 @@ You need a free X developer account. Go to [developer.x.com](https://developer.x
     In the developer portal, click **+ Create Project**. Give it a name (e.g. "Postezi"), select a use case (e.g. "Making a bot"), and create an App inside the project. The app name is only visible in your developer portal.
   </Step>
 
-  <Step title="Set Read and Write permissions">
-    Inside your App, go to **Settings** → **User authentication settings**. Under **App permissions**, select **Read and Write**. Save the settings.
+  <Step title="Set Read and Write permissions and fill in App info">
+    Inside your App, go to **Settings** → **User authentication settings**. Under **App permissions**, select **Read and Write**.
+
+    X will then ask you to fill in **App info** before saving. These fields are required by X but are not used by Postezi — just fill them in as follows:
+
+    | Field | What to enter |
+    |---|---|
+    | **Callback URI / Redirect URL** | `https://postezi.com` |
+    | **Website URL** | `https://postezi.com` |
+    | Organization name | Leave blank |
+    | Organization URL | Leave blank |
+    | Terms of Service | Leave blank |
+    | Privacy Policy | Leave blank |
+
+    Click **Save**. X uses these fields for apps that do OAuth login flows — since Postezi uses your pre-generated Access Token directly, the callback URL is never actually called.
 
     <Warning>
       If you skip this step, your Access Token will only have read permissions and posting will fail with a 403 error. You must regenerate your Access Token after changing permissions.
