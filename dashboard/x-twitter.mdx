@@ -34,18 +34,18 @@ You need a free X developer account. Go to [developer.x.com](https://developer.x
   <Step title="Set Read and Write permissions and fill in App info">
     Inside your App, go to **Settings** → **User authentication settings**. Under **App permissions**, select **Read and Write**.
 
-    X will then ask you to fill in **App info** before saving. These fields are required by X but are not used by Postezi — just fill them in as follows:
+    X will then ask you to fill in **App info** before saving. These fields are required by X to save the form, but **none of them are used by Postezi**. Postezi does not use any OAuth flow — you paste your Access Token directly, so no redirect ever happens.
 
     | Field | What to enter |
     |---|---|
-    | **Callback URI / Redirect URL** | `https://postezi.com` |
-    | **Website URL** | `https://postezi.com` |
+    | **Callback URI / Redirect URL** | Any valid `https://` URL (e.g. your own website) |
+    | **Website URL** | Any valid `https://` URL (e.g. your own website) |
     | Organization name | Leave blank |
     | Organization URL | Leave blank |
     | Terms of Service | Leave blank |
     | Privacy Policy | Leave blank |
 
-    Click **Save**. X uses these fields for apps that do OAuth login flows — since Postezi uses your pre-generated Access Token directly, the callback URL is never actually called.
+    Click **Save**.
 
     <Warning>
       If you skip this step, your Access Token will only have read permissions and posting will fail with a 403 error. You must regenerate your Access Token after changing permissions.
