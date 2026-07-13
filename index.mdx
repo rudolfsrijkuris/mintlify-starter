@@ -1,21 +1,15 @@
 ---
 title: "Introduction"
-description: "Postezi — social publishing infrastructure for developers and AI agents."
+description: "Postezi — social publishing for developers and indie founders."
 ---
 
-Postezi is a social media publishing API and dashboard built for developers, indie founders, and AI agents. Connect your platforms once, then publish or schedule posts to Bluesky, LinkedIn, and Threads from your code, your AI agent, or the dashboard.
+Postezi is a social media publishing dashboard built for developers and indie founders. Connect your platforms once, then publish or schedule posts to Bluesky, LinkedIn, and X from the dashboard or automatically from GitHub.
 
 ## What you can do
 
 <CardGroup cols={2}>
-  <Card title="REST API" icon="code" href="/api-reference/authentication">
-    Publish, schedule, list, and cancel posts programmatically. Full OpenAPI spec at `/docs`.
-  </Card>
-  <Card title="MCP Server" icon="robot" href="/mcp/overview">
-    Hosted MCP server at `/mcp`. Works with Claude, Cursor, n8n, and any MCP-compatible agent.
-  </Card>
   <Card title="Dashboard" icon="layout-dashboard" href="/dashboard/compose">
-    Compose and schedule posts, review AI-drafted content, and connect GitHub repositories.
+    Compose and schedule posts, review AI-drafted content, and connect your social accounts.
   </Card>
   <Card title="GitHub Sources" icon="github" href="/dashboard/sources">
     Connect a repo and Postezi auto-drafts social posts from your commits, PRs, and releases.
@@ -24,19 +18,11 @@ Postezi is a social media publishing API and dashboard built for developers, ind
 
 ## Supported platforms
 
-| Platform | Publish | Schedule | Media | Character limit |
-|----------|---------|----------|-------|-----------------|
-| Bluesky | ✓ | ✓ | ✓ Images | 300 |
-| LinkedIn | ✓ | ✓ | Coming soon | 3,000 |
-| Threads | ✓ | ✓ | Coming soon | 500 |
-
-## Authentication
-
-All API requests require a Bearer token. Get your API key from the [API Keys](https://app.postezi.com/api-keys) page in the dashboard.
-
-```bash
-Authorization: Bearer sk_live_...
-```
+| Platform | Publish | Schedule | Media |
+|----------|---------|----------|-------|
+| Bluesky | ✓ | ✓ | ✓ Images |
+| LinkedIn | ✓ | ✓ | Coming soon |
+| X / Twitter | ✓ | ✓ | Coming soon |
 
 <Tip>
   Need help? Email [support@postezi.com](mailto:support@postezi.com).
