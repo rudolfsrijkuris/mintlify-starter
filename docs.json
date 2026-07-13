@@ -27,6 +27,11 @@
     "global": {
       "anchors": [
         {
+          "anchor": "Blog",
+          "href": "https://blog.postezi.com",
+          "icon": "newspaper"
+        },
+        {
           "anchor": "Support",
           "href": "mailto:support@postezi.com",
           "icon": "envelope"
