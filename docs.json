@@ -72,7 +72,7 @@
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://app.postezi.com"
+      "href": "https://postezi.com/dashboard"
     }
   },
   "contextual": {
