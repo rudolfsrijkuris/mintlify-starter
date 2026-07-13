@@ -1,88 +1,41 @@
 ---
 title: "Quickstart"
-description: "From sign-up to your first published post in under 5 minutes."
+description: "From sign-up to your first published post in minutes."
 ---
 
 ## 1. Create an account
 
-Go to [app.postezi.com](https://app.postezi.com) and enter your email. You'll receive a magic link — click it to sign in. No password needed.
+Go to [postezi.com](https://postezi.com) and click **Get Postezi**. Enter your email and click the magic link — no password needed.
 
-## 2. Get your API key
+## 2. Purchase lifetime access
 
-After signing in, go to **API Keys** in the sidebar. Your key is shown there. Copy it — you'll use it as a Bearer token on every request.
+After signing in you'll land on the billing page. Postezi is a one-time $99 lifetime deal — no subscriptions. Complete the purchase to unlock the dashboard.
 
-```bash
-export POSTEZI_KEY="sk_live_..."
-```
+## 3. Add your Anthropic API key
 
-## 3. Connect a social account
+Go to **Settings → Anthropic API Key**. Paste your key from [console.anthropic.com](https://console.anthropic.com). This is required for GitHub → post transforms. Your key is encrypted and never shared.
 
-Before publishing you need at least one platform connected.
+<Tip>
+  Postezi uses your own Anthropic key (BYOK) so you're always in control of usage and costs.
+</Tip>
 
-**Bluesky** — connect via the dashboard (Accounts → Connect Bluesky) or the API:
+## 4. Connect a social account
 
-```bash
-curl -X POST https://api.postezi.com/v1/accounts/bluesky/connect \
-  -H "Authorization: Bearer $POSTEZI_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"handle": "you.bsky.social", "app_password": "xxxx-xxxx-xxxx-xxxx"}'
-```
+Go to **Accounts** and connect at least one platform:
 
-**LinkedIn / Threads** — connect via the dashboard. The API returns an OAuth URL to redirect the user to.
+- **Bluesky** — enter your handle and an [app password](https://bsky.app/settings/app-passwords)
+- **LinkedIn** — OAuth flow, redirects back automatically
+- **X / Twitter** — OAuth flow, redirects back automatically
+- **Threads** — OAuth flow, redirects back automatically
 
-## 4. Publish your first post
+## 5. Connect a GitHub repository
 
-```bash
-curl -X POST https://api.postezi.com/v1/posts \
-  -H "Authorization: Bearer $POSTEZI_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "content": "Shipped something new today. #buildinpublic",
-    "platforms": ["bluesky"]
-  }'
-```
+Go to **Sources** and connect your GitHub account, then select a repository. Postezi installs a webhook and listens for pushes, merged PRs, and releases.
 
-A successful response looks like:
+When a qualifying event fires, Postezi uses Claude to draft posts for each connected platform and adds them to your queue for review.
 
-```json
-{
-  "data": {
-    "id": "018f...",
-    "content": "Shipped something new today. #buildinpublic",
-    "status": "published",
-    "published_at": "2025-06-19T10:00:00Z",
-    "results": [
-      { "platform": "bluesky", "success": true, "url": "https://bsky.app/profile/..." }
-    ]
-  }
-}
-```
+## 6. Review and publish
 
-## 5. Schedule a post
+Go to **Posts → Queue** to see AI-drafted posts. You can edit, approve, schedule, or discard each one. Approved posts publish immediately; scheduled posts go out at the time you pick.
 
-```bash
-curl -X POST https://api.postezi.com/v1/posts/schedule \
-  -H "Authorization: Bearer $POSTEZI_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "content": "Big launch tomorrow. Stay tuned.",
-    "platforms": ["bluesky", "linkedin"],
-    "scheduled_at": "2025-06-20T09:00:00Z"
-  }'
-```
-
-The post is queued and published automatically at the specified UTC time.
-
-## Using the MCP server
-
-Add Postezi to any MCP-compatible client (Claude, Cursor, n8n) with a single URL:
-
-```
-https://api.postezi.com/mcp
-```
-
-Pass your API key as a Bearer token in the Authorization header. The MCP server exposes tools for publishing, scheduling, listing posts, cancelling scheduled posts, listing accounts, and uploading media.
-
-<Card title="MCP Server docs" icon="robot" href="/mcp/overview">
-  Full tool reference and client setup instructions.
-</Card>
+You can also write posts manually from **Compose**.
