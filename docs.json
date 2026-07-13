@@ -15,20 +15,6 @@
         "pages": ["index", "quickstart"]
       },
       {
-        "group": "REST API",
-        "pages": [
-          "api-reference/authentication",
-          "api-reference/posts",
-          "api-reference/accounts",
-          "api-reference/media",
-          "api-reference/github"
-        ]
-      },
-      {
-        "group": "MCP Server",
-        "pages": ["mcp/overview", "mcp/tools"]
-      },
-      {
         "group": "Dashboard",
         "pages": [
           "dashboard/compose",
@@ -40,16 +26,6 @@
     ],
     "global": {
       "anchors": [
-        {
-          "anchor": "API Reference",
-          "href": "/api-reference/authentication",
-          "icon": "code"
-        },
-        {
-          "anchor": "MCP Server",
-          "href": "/mcp/overview",
-          "icon": "robot"
-        },
         {
           "anchor": "Support",
           "href": "mailto:support@postezi.com",
